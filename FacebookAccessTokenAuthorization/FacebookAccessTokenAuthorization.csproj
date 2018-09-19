@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>HXRd.Facebook.AccessTokenAuthorization</AssemblyName>
+    <RootNamespace>HXRd.Facebook.AccessTokenAuthorization</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>
