@@ -1,17 +1,15 @@
-# GoogleAccessTokenAuthorization
-Google Access Token Authentication for .netcore 2.1
+# FacebookAccessTokenAuthorization
+Facebook Access Token Authentication for .netcore 2.1
 
 ## What does this extension do?
-This extension adds Google authorization to Web Api's in dot net 2.1. It does not do a OIDC authentication, it only verifies the google
-tokens, and adds claims to the principal from googles tokeninfo endpoint and people endpoint. There are some options you can set to affect 
-the behavior of the plugin and these are covered here below. There is also some caching support and will also be documented here below.
-There is a Google namespace in [.netcore security](https://github.com/aspnet/Security/tree/dev/src/Microsoft.AspNetCore.Authentication.Google),
-but as far as I can see it is used for websites to do a Google authentication. If I'm wrong feel free to point it out in the Issues.
+This extension adds Facebook authorization to Web Api's in dot net 2.1. It does not do a OIDC authentication, it only verifies the facebook tokens, and adds claims to the principal from facebooks user endpoint. There are some options you can set to affect  the behavior of the plugin and these are covered here below. There is also some caching support and will also be documented here below.
+There is a Facebook namespace in [.netcore security](https://github.com/aspnet/Security/tree/master/src/Microsoft.AspNetCore.Authentication.Facebook),
+but as far as I can see it is used for websites to do a Facebook authentication. If I'm wrong feel free to point it out in the Issues.
 
 ## Who is the extension for
 This is by no means a best practise for providing authorization to you apis. The best way would to protect it with jwt tokens and setup
-a identity server and use jwt tokens from it to authorize. You could then also sign in with google and get the google access token
-and send it down to the api's if you need to access the google apis. This does introduce some overhead and some times you just
+a identity server and use jwt tokens from it to authorize. You could then also sign in with facebook and get the facebook access token
+and send it down to the api's if you need to access the facebook apis. This does introduce some overhead and some times you just
 want to throw togeater an api fast and stil want some authorization. This might be a case where this extension would be helpful.
 If you have anything that is not going to be just a hobby implementation of an api, go with the [Identity Server](https://github.com/IdentityServer/IdentityServer4) route.
 
@@ -25,9 +23,9 @@ public void ConfigureServices(IServiceCollection services)
     services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     services.AddAuthentication(o =>
     {
-        o.DefaultAuthenticateScheme = GoogleAccessTokenDefaults.GOOGLE_TOKEN_SCHEME;
+        o.DefaultAuthenticateScheme = FacebookAccessTokenDefaults.FACEBOOK_TOKEN_SCHEME;
     })
-    .AddGoogleTokenAuthorization();
+    .AddFacebookTokenAuthorization();
 }
 ```
 Here is an example using all of the supported options
@@ -37,11 +35,11 @@ public void ConfigureServices(IServiceCollection services)
     services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     services.AddAuthentication(o =>
     {
-        o.DefaultAuthenticateScheme = GoogleAccessTokenDefaults.GOOGLE_TOKEN_SCHEME;
+        o.DefaultAuthenticateScheme = FacebookAccessTokenDefaults.FACEBOOK_TOKEN_SCHEME;
     })
-    .AddGoogleTokenAuthorization(
-        GoogleAccessTokenDefaults.GOOGLE_TOKEN_SCHEME,
-        GoogleAccessTokenDefaults.GOOGLE_TOKEN_SCHEME,
+    .AddFacebookTokenAuthorization(
+        FacebookAccessTokenDefaults.Facebook_TOKEN_SCHEME,
+        FacebookAccessTokenDefaults.FACEBOOK_TOKEN_SCHEME,
         o => 
         {
             o.UseMemoryCache = true;
@@ -93,7 +91,7 @@ Here is an simple example on how to protect an endpoint
 public class ValuesController : ControllerBase
 {
     [HttpGet]
-    [Authorize(AuthenticationSchemes = GoogleAccessTokenDefaults.GOOGLE_TOKEN_SCHEME)]
+    [Authorize(AuthenticationSchemes = FacebookAccessTokenDefaults.FACEBOOK_TOKEN_SCHEME)]
     public ActionResult<IEnumerable<string>> Get()
     {
         return new string[] { "value1", "value2" };
@@ -106,7 +104,7 @@ You can provide your own implementation of `IAuthenticationTicketCache` and bind
 you have propably outgrown this extension and should propably be using Identity server instead.
 
 ### Claims
-There are alot of claims set on the identity with this extension. They are obtained from google's tokeninfo and people endpoints I will just list theme here   
+There are alot of claims set on the identity with this extension. They are obtained from facebook user endpoint I will just list theme here   
 Note that the <NUBMER> suffix indicades that there could be more than one and each entry will have a number counting from one.
 #### From TokenInfo
 `azp`   
